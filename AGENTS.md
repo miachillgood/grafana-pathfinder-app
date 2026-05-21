@@ -70,7 +70,7 @@ Dev server runs at http://localhost:3000 (admin/admin). For the complete command
 Imports flow **downward only** to avoid cycles. Cross-tier rules are enforced by ESLint and `src/validation/architecture.test.ts`; exceptions require an explicit allowlist entry with justification.
 
 - **Tier 0 — Types & constants**: `types/`, `constants/`
-- **Tier 1 — Engines & providers**: `context-engine/`, `docs-retrieval/`, `interactive-engine/`, `package-engine/`, `learning-paths/`, `requirements-manager/`, `recovery/`, `validation/`
+- **Tier 1 — Engines & providers**: `context-engine/`, `docs-retrieval/`, `interactive-engine/`, `package-engine/`, `snippet-engine/`, `learning-paths/`, `requirements-manager/`, `recovery/`, `validation/`
 - **Tier 2 — UI**: `components/`, `pages/`
 - **Tier 3 — Support**: `lib/`, `security/`, `styles/`, `global-state/`, `integrations/`, `hooks/`, `utils/`, `test-utils/`, `bundled-interactives/`, `locales/`, `img/`, `cli/`
 
@@ -81,6 +81,7 @@ Imports flow **downward only** to avoid cycles. Cross-tier rules are enforced by
 | `context-engine` → `docs-retrieval`            | Fetches content for the recommendations it surfaces            |
 | `docs-retrieval` → `bundled-interactives`      | Fallback when the online CDN is unavailable                    |
 | `docs-retrieval` → `package-engine`            | Resolves package manifests + content                           |
+| `docs-retrieval` → `snippet-engine`            | Inlines `snippet-ref` blocks against the CDN at parse time     |
 | `components/docs-panel` → `interactive-engine` | Executes step actions when the user clicks "Show me" / "Do it" |
 | `interactive-engine` → `requirements-manager`  | Checks prereqs before enabling / executing a step              |
 | `interactive-engine` → `lib/dom`               | Selector resolution + element detection                        |

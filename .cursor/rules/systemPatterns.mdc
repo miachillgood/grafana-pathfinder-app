@@ -87,7 +87,7 @@ This Grafana App Plugin integrates as a sidebar panel using **Grafana Scenes** f
 Imports flow **downward only** through these tiers. Cross-tier rules are enforced by ESLint and `src/validation/architecture.test.ts`; exceptions require an explicit allowlist entry with justification.
 
 - **Tier 0 — Types & constants**: `types/`, `constants/`. Pure type definitions and configuration constants; no runtime behavior; safe to import from anywhere.
-- **Tier 1 — Engines & providers**: `context-engine/`, `docs-retrieval/`, `interactive-engine/`, `package-engine/`, `learning-paths/`, `requirements-manager/`, `recovery/`, `validation/`. Hold the business logic. Each exposes a barrel `index.ts`; consumers import only the public surface.
+- **Tier 1 — Engines & providers**: `context-engine/`, `docs-retrieval/`, `interactive-engine/`, `package-engine/`, `snippet-engine/`, `learning-paths/`, `requirements-manager/`, `recovery/`, `validation/`. Hold the business logic. Each exposes a barrel `index.ts`; consumers import only the public surface.
 - **Tier 2 — UI**: `components/`, `pages/`. Compose engines into rendered surfaces.
 - **Tier 3 — Support**: `lib/`, `security/`, `styles/`, `global-state/`, `integrations/`, `hooks/`, `utils/`, `test-utils/`, `bundled-interactives/`, `locales/`, `img/`, `cli/`. Auxiliary utilities and feature integrations; imported by Tier 1 and Tier 2.
 
@@ -106,6 +106,7 @@ Compact catalogue. For each subsystem: purpose, entry point (file an agent shoul
 - `docs-retrieval/` — Multi-strategy content fetcher and renderer. Entry: `content-fetcher.ts` (`fetchUnifiedContent`). Renders via `content-renderer.tsx`. Journey-completion helpers in `learning-journey-helpers.ts`.
 - `interactive-engine/` — Executes interactive step actions. Entry: `interactive.hook.ts` (`useInteractiveElements`). Action handlers under `action-handlers/`. See `docs/developer/engines/interactive-engine.md`.
 - `package-engine/` — Package resolution + loading. Entry: `composite-resolver.ts` (`createCompositeResolver`). Resolver chain: bundled → online CDN → recommender API.
+- `snippet-engine/` — Resolves `snippet-ref` blocks to their content. Entry: `caching-snippet-resolver.ts` (`getSnippetResolver`). Fetches from CDN at `<host>/shared/snippets/<id>.json`; no bundled fallback. `inline-refs.ts` splices resolved snippets into a guide before parsing.
 - `learning-paths/` — Progress / badges / streaks / next-action. Entry: `learning-paths.hook.ts`. Badge definitions in `badges.ts`. See `docs/developer/learning-paths/README.md`.
 - `requirements-manager/` — Prereqs + postconditions for steps. Entry: `requirements-checker.hook.ts` (`useStepChecker`). State machine in `step-state.ts`. See `docs/developer/engines/requirements-manager.md`.
 - `recovery/` — Auto-recovery: decides whether the user is in the right place for a guide. Entry: `alignment-evaluator.ts` (`evaluateAlignment`).
